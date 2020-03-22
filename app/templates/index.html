@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+	{% block content %}
+	<h1> Привет, {{ current_user.username }}!</h1>
+	<h2> Выпить ?</h2>
+    <form action="" method="post">
+    	{{ form.hidden_tag() }}
+    	<p>{{ form.submit() }}</p>
+    </form>
+    <hr>
+    <p>Посмотри, что происходит:</p>
+    {% for drink in drinks %}
+    	<p>{{ drink.author.username }} выпивает в {{ drink.drinkTime }}</p>
+    {% endfor %}
+    {% if prev_url %}
+    <a href ="{{ prev_url }}">Предыдущие</a>
+    {% endif %}
+    {% if next_url %}
+    <a href = "{{ next_url }}">Следующие</a>
+    {% endif %}
+	{% endblock %}

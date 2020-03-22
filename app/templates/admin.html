@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+ <table border="1">
+   <caption>Таблица пользователей</caption>
+   <tr>
+    <th>id</th>
+    <th>username</th>
+    <th>regtime</th>
+    <th>email</th>
+    <th>Функция администратора</th>
+    <th>Приватная страница</th>
+   </tr>
+   {% for name in names %}
+   {% if name.username == 'admin' %}
+   <tr><td>{{ name.id }}</td><td>{{ name.username }}</td><td>{{ name.regtime }}</td><td>{{ name.email }}</td><td>-</td><td>{{ name.private_stat }}</td></tr>
+   {% else %}
+   <tr><td>{{ name.id }}</td><td>{{ name.username }}</td><td>{{ name.regtime }}</td><td>{{ name.email }}</td>
+   	<td><a href = "{{ url_for('delete', username = name.username) }}"> Удалить пользователя </a></td><td>{{ name.private_stat }}</td></tr>
+   {% endif %}
+   {% endfor %}
+{% endblock %}

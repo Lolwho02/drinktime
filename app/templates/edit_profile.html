@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="" method = "post">
+
+<p>{{ form.hidden_tag() }}</p>
+
+{% if current_user.private_stat %}
+
+<p>{{ form.isntPrivate() }} {{ form.isntPrivate.label }} </p>
+
+{% else %}
+
+<p>{{ form.isPrivate() }} {{ form.isPrivate.label }} </p>
+
+{% endif %}
+
+<p>{{ form.submit() }}</p>
+
+</form>
+
+{% endblock %}
