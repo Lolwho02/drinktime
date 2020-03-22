@@ -155,6 +155,3 @@ def followed(username):
 	user = User.query.filter_by(username = username).first()
 	followeds = user.followed
 	return render_template('followed.html', user = user, followeds = followeds)
-
-
-#string to wrong commit
