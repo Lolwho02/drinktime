@@ -16,5 +16,3 @@ class Config(object):
     ADMINS = ['flask_mail@mail.ru']
 
     POSTS_PER_PAGE = 3
-
-#тесчу с удаленным репозиторием
