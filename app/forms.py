@@ -32,6 +32,10 @@ class DrinkForm(FlaskForm):
 	submit = SubmitField('Выпить')
 
 
+class PageForm(FlaskForm):
+	page = StringField('Номер страницы', validators = [DataRequired()])
+	submit = SubmitField('Перейти')
+
 class PrivateForm(FlaskForm):
 	isPrivate = BooleanField(' Скрыть статистику ')
 	isntPrivate = BooleanField('Открыть статистику')

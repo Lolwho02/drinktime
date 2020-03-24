@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app,db
-from app.forms import RegistrationForm, LoginForm, DrinkForm, PrivateForm
+from app.forms import RegistrationForm, LoginForm, DrinkForm, PrivateForm, PageForm
 from app.models import User, Drinks
 from flask_login import current_user, login_user, login_required, logout_user
 from flask_paginate import Pagination
@@ -60,12 +60,18 @@ def index():
 		db.session.add(drink)
 		db.session.commit()
 		flash('Запись сделана в вашем профиле !')
+		return redirect(url_for('index'))
 	drinks = current_user.followed_drinks().paginate(page, app.config['POSTS_PER_PAGE'], True)
 	next_url = url_for('index', page = drinks.next_num) \
 		if drinks.has_next else None
 	prev_url = url_for('index', page = drinks.prev_num) \
 		if drinks.has_prev else None
-	return render_template('index.html', title = 'Главная', form = form, drinks = drinks.items, next_url = next_url, prev_url = prev_url)
+	page_form = PageForm()
+	total_pages = drinks.pages
+	drinks_pagination = drinks.iter_pages(left_edge=2, left_current=2, right_current=5, right_edge=2)
+	return render_template('index.html', title = 'Главная', form = form, page = page, total_pages = total_pages,
+						   drinks = drinks.items, next_url = next_url, prev_url = prev_url, page_form = page_form,
+						   drinks_pagination = drinks_pagination)
 
 #СТРАНИЦА ПОЛЬЗОВАТЕЛЯ
 @app.route('/user/<username>')
@@ -155,7 +161,3 @@ def followed(username):
 	user = User.query.filter_by(username = username).first()
 	followeds = user.followed
 	return render_template('followed.html', user = user, followeds = followeds)
-
-
-
-#edit

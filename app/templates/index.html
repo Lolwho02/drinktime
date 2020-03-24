@@ -11,10 +11,14 @@
     {% for drink in drinks %}
     	<p>{{ drink.author.username }} выпивает в {{ drink.drinkTime }}</p>
     {% endfor %}
-    {% if prev_url %}
-    <a href ="{{ prev_url }}">Предыдущие</a>
-    {% endif %}
-    {% if next_url %}
-    <a href = "{{ next_url }}">Следующие</a>
-    {% endif %}
-	{% endblock %}
+    {% if next_url %} <a href = "{{ next_url }}">Следующая страница</a> {% endif %}
+    {% if prev_url %} <a href = "{{ prev_url }}">Предыдущая страница</a> {% endif %}
+    <p> Текущая страница: {{ page }} из {{ total_pages }}</p>
+    {% for page in drinks_pagination %}
+        {% if page == None %}
+            ...
+        {% else %}
+            <a href ="/?page={{ page }}">{{ page }}</a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
