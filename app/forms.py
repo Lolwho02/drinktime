@@ -40,3 +40,8 @@ class PrivateForm(FlaskForm):
 	isPrivate = BooleanField(' Скрыть статистику ')
 	isntPrivate = BooleanField('Открыть статистику')
 	submit = SubmitField('Принять')
+
+
+class ResetPasswordForm(FlaskForm):
+	email = StringField('Email', validators = [DataRequired(), Email()])
+	submit = SubmitField('Принять')

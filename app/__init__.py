@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler
+from flask_mail import Mail
 
 app = Flask(__name__) #задаюсь именем модуля в котором использую
 
@@ -15,6 +16,9 @@ login.login_view = 'login'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+
+mail = Mail(app)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:

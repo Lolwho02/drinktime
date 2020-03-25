@@ -1,6 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app,db
-from app.forms import RegistrationForm, LoginForm, DrinkForm, PrivateForm, PageForm
+from app.forms import RegistrationForm, LoginForm, DrinkForm, PrivateForm, PageForm, ResetPasswordForm
+from app.email import send_mail
 from app.models import User, Drinks
 from flask_login import current_user, login_user, login_required, logout_user
 from flask_paginate import Pagination
@@ -161,3 +162,17 @@ def followed(username):
 	user = User.query.filter_by(username = username).first()
 	followeds = user.followed
 	return render_template('followed.html', user = user, followeds = followeds)
+
+#ФУНКЦИЯ ВОССТАНОВЛЕНИЯ ПАРОЛЯ
+@app.route('/reset_password', methods = ['GET', 'POST'])
+def reset_password():
+	if current_user.is_authenticated:
+		return redirect(url_for('index'))
+	form = ResetPasswordForm()
+	if form.validate_on_submit():
+		user = User.query.filter_by(email = form.email.data).first()
+		if user is not None:
+			flash('Успешно')
+		else:
+			flash('Пользователь с такой почтой не найден')
+	return render_template('reset_password.html', form = form)
