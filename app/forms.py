@@ -42,6 +42,13 @@ class PrivateForm(FlaskForm):
 	submit = SubmitField('Принять')
 
 
-class ResetPasswordForm(FlaskForm):
+class EmailToResetPassword(FlaskForm):
 	email = StringField('Email', validators = [DataRequired(), Email()])
+	submit = SubmitField('Принять')
+
+
+
+class ResetPasswordForm(FlaskForm):
+	password1 = PasswordField('Пароль', validators = [DataRequired()])
+	password2 = PasswordField('Подтвердите пароль', validators = [EqualTo(password1)])
 	submit = SubmitField('Принять')

@@ -1,10 +1,9 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app,db
-from app.forms import RegistrationForm, LoginForm, DrinkForm, PrivateForm, PageForm, ResetPasswordForm
-from app.email import send_mail
+from app.forms import RegistrationForm, LoginForm, DrinkForm, PrivateForm, PageForm, ResetPasswordForm, EmailToResetPassword
+from app.email import send_reset_password_email
 from app.models import User, Drinks
 from flask_login import current_user, login_user, login_required, logout_user
-from flask_paginate import Pagination
 from werkzeug.urls import url_parse
 
 #РЕГИСТРАЦИЯ
@@ -164,15 +163,30 @@ def followed(username):
 	return render_template('followed.html', user = user, followeds = followeds)
 
 #ФУНКЦИЯ ВОССТАНОВЛЕНИЯ ПАРОЛЯ
-@app.route('/reset_password', methods = ['GET', 'POST'])
-def reset_password():
+@app.route('/reset_password_request', methods = ['GET', 'POST'])
+def reset_password_request():
 	if current_user.is_authenticated:
 		return redirect(url_for('index'))
-	form = ResetPasswordForm()
+	form = EmailToResetPassword()
 	if form.validate_on_submit():
 		user = User.query.filter_by(email = form.email.data).first()
 		if user is not None:
-			flash('Успешно')
+			send_reset_password_email(user)
+			flash('Успешно отправлено')
 		else:
 			flash('Пользователь с такой почтой не найден')
-	return render_template('reset_password.html', form = form)
+	return render_template('reset_password_request.html', form = form)
+@app.route('/reset_password/<token>', methods = ['GET', 'POST'])
+def reset_password(token):
+	if current_user.is_authenticated:
+		return redirect(url_for('index'))
+	user = user.verify_reset_password_token(token)
+	if user is None:
+		return redirect(url_for('index'))
+	form = ResetPasswordForm()
+	if form.validate_on_submit():
+		user.set_password(self, ResetPasswordForm.password1.data)
+		db.session.commit()
+		flash('Вы успешно поменяли пароль')
+		return redirect(url_for('login'))
+	return render_template('reset_password.html', form=form)

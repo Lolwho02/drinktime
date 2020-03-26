@@ -5,11 +5,12 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler
 from flask_mail import Mail
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__) #задаюсь именем модуля в котором использую
 
 from config import Config
-app.config.from_object(Config)
+app.config.from_object(Config)#наполняю словарь config из объекта Config
 
 login = LoginManager(app)
 login.login_view = 'login'
@@ -19,6 +20,9 @@ migrate = Migrate(app, db)
 
 
 mail = Mail(app)
+
+
+bootstrap = Bootstrap(app)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
