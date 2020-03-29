@@ -9,10 +9,10 @@
     <hr>
     <p>Посмотри, что происходит:</p>
     {% for drink in drinks %}
-    	<p>{{ drink.author.username }} выпивает в {{ drink.drinkTime }}</p>
+    	<p><a href="/user/{{ drink.author.username }}">{{ drink.author.username }}</a> выпивает в {{ moment(drink.drinkTime).format('LLL') }}</p>
     {% endfor %}
-    {% if next_url %} <a href = "{{ next_url }}">Следующая страница</a> {% endif %}
-    {% if prev_url %} <a href = "{{ prev_url }}">Предыдущая страница</a> {% endif %}
+    {% if prev_url %} <a href = "{{ prev_url }}"> << </a> {% endif %}
+    {% if next_url %} <a href = "{{ next_url }}"> >> </a> {% endif %}
     <p> Текущая страница: {{ page }} из {{ total_pages }}</p>
     {% for page in drinks_pagination %}
         {% if page == None %}

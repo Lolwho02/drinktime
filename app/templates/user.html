@@ -5,9 +5,23 @@
 <h2>Подписан на:<a href = "{{ url_for('followed', username = user.username) }}"> {{ user.followed.count() }}</a> 
 	Подписчиков: <a href = "{{ url_for('followers', username = user.username) }}">{{ user.followers.count()}}</a></h2>
 
-{% if user.private_stat and current_user != user %}
-<p>Пользователь предпочел скрыть инфорамацию</p>
+{% if not user.private_stat or current_user == user or current_user.is_following(user) %}
+	{% for drink in drinks %}
+		<p>{{ drink.author.username }} выпил в {{ moment(drink.drinkTime).format('LLL') }}</p>
+	{% endfor %}
+{% else %}
+	<p> Пользователь предпочел скрыть данную страницу </p>
 {% endif %}
+{% if prev_url %} <a href = "{{ prev_url }}"> << </a> {% endif %}
+{% if next_url %} <a href = "{{ next_url }}"> >> </a> {% endif %}
+<br>
+{% for page in drinks_pagination %}
+	{% if page == None %}
+	...
+	{% else %}
+	<a href = "{{ url_for('user', username = user.username, page = page) }}"> {{ page }}</a>
+	{% endif %}
+{% endfor %}
 
 {% if user != current_user %}
 {% if current_user.is_following(user) %}
@@ -17,14 +31,8 @@
 {% endif %}
 {% endif %}
 
-{% if not user.private_stat or current_user == user %}
-	{% for drink in drinks %}
-		<p>{{ drink.author.username }} выпил в {{ drink.drinkTime }}</p>
-	{% endfor %}
-{% endif %}
-
 {% if current_user == user %}
-	<a href = "{{ url_for('edit_profile') }}">Редактировать профиль</a>
+	<p></P><a href = "{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
 {% endif %}
 
 {% endblock %}

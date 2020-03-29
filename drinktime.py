@@ -4,5 +4,3 @@ from app.models import User, Drinks
 @app.shell_context_processor
 def make_shell_context():
     return {'db': db, 'User': User, 'Drinks': Drinks}
-
-#тесчу ребэйс
