@@ -14,7 +14,7 @@ followers = db.Table('followers',
 class User(db.Model, UserMixin):
 	id = db.Column(db.Integer, primary_key = True)
 	username = db.Column(db.String(64), index = True, unique = True)
-	regtime = db.Column(db.DateTime, index = True, default = datetime.now())
+	regtime = db.Column(db.DateTime, index = True, default = datetime.utcnow())
 	last_seen = db.Column(db.DateTime, default = datetime.utcnow())
 	email = db.Column(db.String(128), index = True, unique = True)
 	password_hash = db.Column(db.String(128))

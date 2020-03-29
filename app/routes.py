@@ -77,9 +77,16 @@ def index():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+	page = request.args.get('page', 1, type = int)
 	user = User.query.filter_by(username = username).first_or_404()
-	drinks = user.drink.order_by(Drinks.drinkTime.desc()).all()
-	return render_template('user.html', user = user, drinks = drinks)
+	drinks = user.drink.order_by(Drinks.drinkTime.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+	next_url = url_for('user', username = user.username, page = drinks.next_num) \
+		if drinks.has_next else None
+	prev_url = url_for('user', username = user.username, page = drinks.prev_num) \
+		if drinks.has_prev else None
+	drinks_pagination = drinks.iter_pages(left_edge=2, left_current=2, right_current=2, right_edge=2)
+	return render_template('user.html', user = user, drinks = drinks.items, drinks_pagination = drinks_pagination,
+						   page = page, next_url = next_url, prev_url = prev_url)
 
 
 #СТРАНИЦА РЕДАКТИРОВАНИЯ
