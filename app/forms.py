@@ -2,13 +2,14 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import Email, Length, EqualTo, DataRequired, ValidationError
 from app.models import User
+from flask_babel import lazy_gettext as _l
 
 class RegistrationForm(FlaskForm):
-	username = StringField('Имя пользователя', validators = [DataRequired()])
-	email = StringField('Email', validators = [DataRequired(), Email()])
-	password = PasswordField('Пароль', validators = [DataRequired()])
-	password2 = PasswordField('Повторите пароль', validators = [DataRequired(), EqualTo('password')])
-	submit = SubmitField('Подтвердить')
+	username = StringField(_l('Имя пользователя'), validators = [DataRequired()])
+	email = StringField(_l('Email'), validators = [DataRequired(), Email()])
+	password = PasswordField(_l('Пароль'), validators = [DataRequired()])
+	password2 = PasswordField(_l('Повторите пароль'), validators = [DataRequired(), EqualTo('password')])
+	submit = SubmitField(_l('Подтвердить'))
 
 	def validate_user(self, username):
 		user = User.query.filter_by(username = username.data).first()
@@ -22,14 +23,14 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-	username = StringField('Имя пользователя', validators = [DataRequired()])
-	password = PasswordField('Пароль', validators = [DataRequired()])
-	submit = SubmitField('Войти')
-	remember_me = BooleanField('Запомни меня')
+	username = StringField(_l('Имя пользователя'), validators = [DataRequired()])
+	password = PasswordField(_l('Пароль'), validators = [DataRequired()])
+	submit = SubmitField(_l('Войти'))
+	remember_me = BooleanField(_l('Запомни меня'))
 
 
 class DrinkForm(FlaskForm):
-	submit = SubmitField('Выпить')
+	submit = SubmitField(_l('Выпить'))
 
 
 class PageForm(FlaskForm):
@@ -37,18 +38,18 @@ class PageForm(FlaskForm):
 	submit = SubmitField('Перейти')
 
 class PrivateForm(FlaskForm):
-	isPrivate = BooleanField(' Скрыть статистику ')
-	isntPrivate = BooleanField('Открыть статистику')
-	submit = SubmitField('Принять')
+	isPrivate = BooleanField(_l(' Скрыть статистику '))
+	isntPrivate = BooleanField(_l('Открыть статистику'))
+	submit = SubmitField(_l('Принять'))
 
 
 class EmailToResetPassword(FlaskForm):
-	email = StringField('Email', validators = [DataRequired(), Email()])
-	submit = SubmitField('Принять')
+	email = StringField(_l('Email'), validators = [DataRequired(), Email()])
+	submit = SubmitField(_l('Принять'))
 
 
 
 class ResetPasswordForm(FlaskForm):
-	password1 = PasswordField('Пароль', validators = [DataRequired()])
-	password2 = PasswordField('Подтвердите пароль', validators = [EqualTo(password1)])
-	submit = SubmitField('Принять')
+	password1 = PasswordField(_l('Пароль'), validators = [DataRequired()])
+	password2 = PasswordField(_l('Подтвердите пароль'), validators = [EqualTo(password1)])
+	submit = SubmitField(_l('Принять'))

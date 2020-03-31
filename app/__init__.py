@@ -1,4 +1,4 @@
-from flask import Flask #импортирую из фласка главный класс - Flask
+from flask import Flask, request  # импортирую из фласка главный класс - Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -7,27 +7,31 @@ import logging
 from logging.handlers import SMTPHandler
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
+from flask_babel import Babel, lazy_gettext as _l
 
-app = Flask(__name__) #задаюсь именем модуля в котором использую
+app = Flask(__name__)  # задаюсь именем модуля в котором использую
 
 from config import Config
-app.config.from_object(Config)#наполняю словарь config из объекта Config
+
+app.config.from_object(Config)  # наполняю словарь config из объекта Config
 
 login = LoginManager(app)
 login.login_view = 'login'
+login.login_message = _l('Войдите в свой аккаунт для просмотра данной страницы')
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
 mail = Mail(app)
-
 
 bootstrap = Bootstrap(app)
 
-
-
 moment = Moment(app)
+
+babel = Babel(app)
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGE'])
 
 if not app.debug:
     if app.config['MAIL_SERVER']:

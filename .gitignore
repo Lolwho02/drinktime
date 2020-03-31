@@ -3,3 +3,6 @@
 
 # Packages
 __pycache__
+
+# flask-babel language
+messages.pot

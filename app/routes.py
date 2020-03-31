@@ -5,6 +5,7 @@ from app.email import send_reset_password_email
 from app.models import User, Drinks
 from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.urls import url_parse
+from flask_babel import _
 
 #РЕГИСТРАЦИЯ
 @app.route('/registration', methods = ['GET', 'POST'])
@@ -17,7 +18,7 @@ def registration():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Вы зарегестрированы !')
+        flash(_('Вы зарегестрированы !'))
         return redirect(url_for('login'))
     return render_template('registration.html', form = form, title = 'Страница регистрации')
 
@@ -30,10 +31,10 @@ def login():
 	if form.validate_on_submit():
 		user = User.query.filter_by(username = form.username.data).first()
 		if user is None or not user.check_password(form.password.data):
-			flash('Неправильное имя пользователя или пароль')
+			flash(_('Неправильное имя пользователя или пароль'))
 			return redirect(url_for('login'))
 		login_user(user)
-		flash('Успех !')
+		flash(_('Успех !'))
 		next_page = request.args.get('next')
 		if not next_page or url_parse(next_page).netloc != '':
 			next_page = url_for('index')
@@ -43,6 +44,7 @@ def login():
 
 #ЛОГАУТ
 @app.route('/logout', methods = ['GET', 'POST'])
+@login_required
 def logout():
 	logout_user()
 	return redirect(url_for('index'))
@@ -59,7 +61,7 @@ def index():
 		drink = Drinks(author = current_user)
 		db.session.add(drink)
 		db.session.commit()
-		flash('Запись сделана в вашем профиле !')
+		flash(_('Запись сделана в вашем профиле !'))
 		return redirect(url_for('index'))
 	drinks = current_user.followed_drinks().paginate(page, app.config['POSTS_PER_PAGE'], True)
 	next_url = url_for('index', page = drinks.next_num) \
@@ -98,7 +100,7 @@ def edit_profile():
 		current_user.private_stat = form.isPrivate.data
 		current_user.private_stat = not(form.isntPrivate.data)
 		db.session.commit()
-		flash('Изменения приняты')
+		flash(_('Изменения приняты'))
 		return redirect(url_for('edit_profile'))
 	return render_template('edit_profile.html', title = 'Редактирование профиля', form = form)
 
@@ -110,7 +112,7 @@ def admin():
 	if current_user.username == 'admin':
 		names = User.query.all()
 	else:
-		flash('СТРАНИЦА ДОСТУПНА ТОЛЬКО АДМИНИСТРАТОРУ')
+		flash(_('СТРАНИЦА ДОСТУПНА ТОЛЬКО АДМИНИСТРАТОРУ'))
 		return redirect('index')
 	return render_template('admin.html', names = names)
 
@@ -124,7 +126,7 @@ def delete(username):
 		db.session.commit()
 		return redirect(url_for('admin'))
 	else:
-		flash('Вы не администратор')
+		flash(_('Вы не администратор'))
 
 #Функция подписки
 @app.route('/follow/<username>')
@@ -132,7 +134,7 @@ def delete(username):
 def follow(username):
 	user = User.query.filter_by(username = username).first()
 	if current_user == user:
-		flash('Нельзя подписаться на самого себя')
+		flash(_('Нельзя подписаться на самого себя'))
 	else:
 		current_user.follow(user)
 		db.session.commit()
@@ -145,12 +147,12 @@ def follow(username):
 def unfollow(username):
 	user = User.query.filter_by(username = username).first()
 	if current_user == user:
-		flash('Нельзя отписаться от самого себя')
+		flash(_('Нельзя отписаться от самого себя'))
 	if user is None:
 		flash(f'Пользователя {username} не существует')
 	current_user.unfollow(user)
 	db.session.commit()
-	flash('Выпонено')
+	flash(_('Выпонено'))
 	return redirect(url_for('user', username = username))
 
 #ФУНКЦИЯ ПРОСМОТРА ФОЛЛОВЕРОВ
@@ -179,9 +181,9 @@ def reset_password_request():
 		user = User.query.filter_by(email = form.email.data).first()
 		if user is not None:
 			send_reset_password_email(user)
-			flash('Успешно отправлено')
+			flash(_('Успешно отправлено'))
 		else:
-			flash('Пользователь с такой почтой не найден')
+			flash(_('Пользователь с такой почтой не найден'))
 	return render_template('reset_password_request.html', form = form)
 @app.route('/reset_password/<token>', methods = ['GET', 'POST'])
 def reset_password(token):
@@ -194,6 +196,6 @@ def reset_password(token):
 	if form.validate_on_submit():
 		user.set_password(self, ResetPasswordForm.password1.data)
 		db.session.commit()
-		flash('Вы успешно поменяли пароль')
+		flash(_('Вы успешно поменяли пароль'))
 		return redirect(url_for('login'))
 	return render_template('reset_password.html', form=form)

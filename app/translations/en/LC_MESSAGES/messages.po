@@ -1,0 +1,124 @@
+# English translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-03-31 22:49+0300\n"
+"PO-Revision-Date: 2020-03-31 22:51+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: app/__init__.py:20
+msgid "Войдите в свой аккаунт для просмотра данной страницы"
+msgstr "Please login into your account to view this page"
+
+#: app/forms.py:8 app/forms.py:26
+msgid "Имя пользователя"
+msgstr "Username"
+
+#: app/forms.py:9 app/forms.py:47
+msgid "Email"
+msgstr "Email"
+
+#: app/forms.py:10 app/forms.py:27 app/forms.py:53
+msgid "Пароль"
+msgstr "Password"
+
+#: app/forms.py:11
+msgid "Повторите пароль"
+msgstr "Repeat Password"
+
+#: app/forms.py:12
+msgid "Подтвердить"
+msgstr "Submit"
+
+#: app/forms.py:28
+msgid "Войти"
+msgstr "Login"
+
+#: app/forms.py:29
+msgid "Запомни меня"
+msgstr "Remember me"
+
+#: app/forms.py:33
+msgid "Выпить"
+msgstr "Drink"
+
+#: app/forms.py:41
+msgid " Скрыть статистику "
+msgstr "Private stat"
+
+#: app/forms.py:42
+msgid "Открыть статистику"
+msgstr "Public stat"
+
+#: app/forms.py:43 app/forms.py:48 app/forms.py:55
+msgid "Принять"
+msgstr "Submit"
+
+#: app/forms.py:54
+msgid "Подтвердите пароль"
+msgstr "Repeat password"
+
+#: app/routes.py:21
+msgid "Вы зарегестрированы !"
+msgstr "You are now registered !"
+
+#: app/routes.py:34
+msgid "Неправильное имя пользователя или пароль"
+msgstr "Wrong username or password"
+
+#: app/routes.py:37
+msgid "Успех !"
+msgstr "Success !"
+
+#: app/routes.py:64
+msgid "Запись сделана в вашем профиле !"
+msgstr "Look in your profile"
+
+#: app/routes.py:103
+msgid "Изменения приняты"
+msgstr "Changes complete"
+
+#: app/routes.py:115
+msgid "СТРАНИЦА ДОСТУПНА ТОЛЬКО АДМИНИСТРАТОРУ"
+msgstr "THIS PAGE ALLOWED ONLY FOR ADMIN ACCOUNT"
+
+#: app/routes.py:129
+msgid "Вы не администратор"
+msgstr "YOU ARE NOT ADMIN"
+
+#: app/routes.py:137
+msgid "Нельзя подписаться на самого себя"
+msgstr "You cannot follow yourself"
+
+#: app/routes.py:150
+msgid "Нельзя отписаться от самого себя"
+msgstr "You cannot unfollow yourself"
+
+#: app/routes.py:155
+msgid "Выпонено"
+msgstr "Complete"
+
+#: app/routes.py:184
+msgid "Успешно отправлено"
+msgstr "Sucess"
+
+#: app/routes.py:186
+msgid "Пользователь с такой почтой не найден"
+msgstr "Email not found"
+
+#: app/routes.py:199
+msgid "Вы успешно поменяли пароль"
+msgstr "You are now succesfull change your password"
+
