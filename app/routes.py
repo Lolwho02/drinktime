@@ -57,6 +57,8 @@ def logout():
 def index():
 	page = request.args.get('page', 1, type = int)
 	form = DrinkForm()
+	current_user.det_currentstate()
+	db.session.commit()
 	if form.validate_on_submit():
 		drink = Drinks(author = current_user)
 		db.session.add(drink)

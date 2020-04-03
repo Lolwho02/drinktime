@@ -1,24 +1,37 @@
 {% extends 'base.html' %}
-	{% block content %}
-	<h1> Привет, {{ current_user.username }}!</h1>
-	<h2> Выпить ?</h2>
-    <form action="" method="post">
-    	{{ form.hidden_tag() }}
-    	<p>{{ form.submit() }}</p>
-    </form>
-    <hr>
-    <p>Посмотри, что происходит:</p>
-    {% for drink in drinks %}
-    	<p><a href="/user/{{ drink.author.username }}">{{ drink.author.username }}</a> выпивает в {{ moment(drink.drinkTime).format('LLL') }}</p>
-    {% endfor %}
-    {% if prev_url %} <a href = "{{ prev_url }}"> << </a> {% endif %}
-    {% if next_url %} <a href = "{{ next_url }}"> >> </a> {% endif %}
-    <p> Текущая страница: {{ page }} из {{ total_pages }}</p>
-    {% for page in drinks_pagination %}
-        {% if page == None %}
-            ...
-        {% else %}
-            <a href ="/?page={{ page }}">{{ page }}</a>
-        {% endif %}
-    {% endfor %}
+{% block content %}
+{% if current_user.current_state == None %}
+<h1> Привет, {{ current_user.username }}! <span style="color: green">Похоже ты еще ни разу не пил, либо не отмечался здесь</span></h1>
+<h2> Выпить ?</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ form.submit() }}</p>
+</form>
+{% elif current_user.current_state > 0 %}
+<h1> Привет, {{ current_user.username }}! В последний раз ты выпивал <span style="color: green">{{ current_user.current_state }} д. назад</span>
+</h1>
+<h2> Выпить ?</h2>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ form.submit() }}</p>
+</form>
+{% elif current_user.current_state == 0 %}
+<h1> Привет, {{ current_user.username }}! <span style="color: red">Сегодня ты уже выпивал</span></h1>
+{% endif %}
+<hr>
+<p>Посмотри, что происходит:</p>
+{% for drink in drinks %}
+<p><a href="/user/{{ drink.author.username }}">{{ drink.author.username }}</a> выпивает в {{
+    moment(drink.drinkTime).format('LLL') }}</p>
+{% endfor %}
+{% if prev_url %} <a href="{{ prev_url }}"> << </a> {% endif %}
+{% if next_url %} <a href="{{ next_url }}"> >> </a> {% endif %}
+<p> Текущая страница: {{ page }} из {{ total_pages }}</p>
+{% for page in drinks_pagination %}
+{% if page == None %}
+...
+{% else %}
+<a href="/?page={{ page }}">{{ page }}</a>
+{% endif %}
+{% endfor %}
 {% endblock %}

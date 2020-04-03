@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
 	password_hash = db.Column(db.String(128))
 	drink = db.relationship('Drinks', backref='author', lazy='dynamic')
 	private_stat = db.Column(db.Boolean)
+	current_state = db.Column(db.Integer, default = 0)
 	followed = db.relationship('User', secondary=followers,
     	primaryjoin=(followers.c.follower_id == id),
     	secondaryjoin=(followers.c.followed_id == id),
@@ -44,6 +45,12 @@ class User(db.Model, UserMixin):
                 followers.c.follower_id == self.id)
 		own = Drinks.query.filter_by(user_id=self.id)
 		return followed.union(own).order_by(Drinks.drinkTime.desc())
+
+	def det_currentstate(self):
+		d = Drinks.query.filter_by(user_id=self.id).order_by(Drinks.drinkTime.desc()).all()
+		if len(d) != 0:
+			self.current_state = (datetime.utcnow() - d[0].drinkTime).days
+		else: self.current_state = None
 
 
 	def set_password(self, password):
