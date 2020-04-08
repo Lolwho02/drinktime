@@ -2,8 +2,8 @@
 {% block content %}
 
 <h1>Пользователь: {{ user.username }} </h1>
-<h2>Подписан на:<a href = "{{ url_for('followed', username = user.username) }}"> {{ user.followed.count() }}</a> 
-	Подписчиков: <a href = "{{ url_for('followers', username = user.username) }}">{{ user.followers.count()}}</a></h2>
+<h2>Подписан на:<a href = "{{ url_for('main.followed', username = user.username) }}"> {{ user.followed.count() }}</a>
+	Подписчиков: <a href = "{{ url_for('main.followers', username = user.username) }}">{{ user.followers.count()}}</a></h2>
 
 {% if not user.private_stat or current_user == user or current_user.is_following(user) %}
 	{% for drink in drinks %}
@@ -19,20 +19,20 @@
 	{% if page == None %}
 	...
 	{% else %}
-	<a href = "{{ url_for('user', username = user.username, page = page) }}"> {{ page }}</a>
+	<a href = "{{ url_for('main.user', username = user.username, page = page) }}"> {{ page }}</a>
 	{% endif %}
 {% endfor %}
 
 {% if user != current_user %}
 {% if current_user.is_following(user) %}
-	<p><a href = "{{ url_for('unfollow', username = user.username) }}"> Отписаться </a></p>
+	<p><a href = "{{ url_for('main.unfollow', username = user.username) }}"> Отписаться </a></p>
 {% else %}
-	<p><a href = "{{ url_for('follow', username = user.username) }}"> Подписаться </a></p>
+	<p><a href = "{{ url_for('main.follow', username = user.username) }}"> Подписаться </a></p>
 {% endif %}
 {% endif %}
 
 {% if current_user == user %}
-	<p></P><a href = "{{ url_for('edit_profile') }}">Редактировать профиль</a></p>
+	<p></P><a href = "{{ url_for('main.edit_profile') }}">Редактировать профиль</a></p>
 {% endif %}
 
 {% endblock %}

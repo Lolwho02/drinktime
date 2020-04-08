@@ -5,12 +5,12 @@
 	<caption>Подписки</caption>
 	<tr><th>Имя пользователя</th></tr>
 	{% for follower in followers %}
-		<tr><td><a href = "{{ url_for('user', username = follower.username) }}">{{ follower.username }}</a></td>
+		<tr><td><a href = "{{ url_for('main.user', username = follower.username) }}">{{ follower.username }}</a></td>
 			{% if current_user.username != follower.username %}
 			{% if current_user.is_following(follower) %}
-			<td><a href = "{{ url_for('unfollow', username = follower.username) }}">Отписаться</a></td>
+			<td><a href = "{{ url_for('main.unfollow', username = follower.username) }}">Отписаться</a></td>
 			{% elif not current_user.is_following(follower) %}
-			<td><a href = "{{ url_for('follow', username = follower.username) }}">Подписаться</a></td>
+			<td><a href = "{{ url_for('main.follow', username = follower.username) }}">Подписаться</a></td>
 			{% endif %}
 			{% endif %}
 		</tr>

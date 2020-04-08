@@ -22,12 +22,6 @@ class RegistrationForm(FlaskForm):
 			raise ValidationError('Данный e-mail уже используется, попробуйте другой email !')
 
 
-class LoginForm(FlaskForm):
-	username = StringField(_l('Имя пользователя'), validators = [DataRequired()])
-	password = PasswordField(_l('Пароль'), validators = [DataRequired()])
-	submit = SubmitField(_l('Войти'))
-	remember_me = BooleanField(_l('Запомни меня'))
-
 
 class DrinkForm(FlaskForm):
 	submit = SubmitField(_l('Выпить'))
@@ -40,16 +34,4 @@ class PageForm(FlaskForm):
 class PrivateForm(FlaskForm):
 	isPrivate = BooleanField(_l(' Скрыть статистику '))
 	isntPrivate = BooleanField(_l('Открыть статистику'))
-	submit = SubmitField(_l('Принять'))
-
-
-class EmailToResetPassword(FlaskForm):
-	email = StringField(_l('Email'), validators = [DataRequired(), Email()])
-	submit = SubmitField(_l('Принять'))
-
-
-
-class ResetPasswordForm(FlaskForm):
-	password1 = PasswordField(_l('Пароль'), validators = [DataRequired()])
-	password2 = PasswordField(_l('Подтвердите пароль'), validators = [EqualTo(password1)])
 	submit = SubmitField(_l('Принять'))

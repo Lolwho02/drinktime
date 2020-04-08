@@ -1,9 +1,11 @@
-from app import db, login, app
+from flask import current_app
+from app import db, login
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from time import time
 import jwt
+from app.current_state import det_current_state
 
 followers = db.Table('followers',
 	db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
@@ -31,7 +33,7 @@ class User(db.Model, UserMixin):
 
 	def follow(self, user):
 		if not self.is_following(user):
-			self.followed.append(user)
+			self.followed.current_append(user)
 
 	def unfollow(self, user):
 		if self.is_following(user):
@@ -49,7 +51,9 @@ class User(db.Model, UserMixin):
 	def det_currentstate(self):
 		d = Drinks.query.filter_by(user_id=self.id).order_by(Drinks.drinkTime.desc()).all()
 		if len(d) != 0:
-			self.current_state = (datetime.utcnow() - d[0].drinkTime).days
+			d1 = d[0].drinkTime
+			d2 = datetime.utcnow()
+			self.current_state = det_current_state(d1, d2)
 		else: self.current_state = None
 
 
@@ -61,15 +65,15 @@ class User(db.Model, UserMixin):
 
 	def get_reset_password_token(self, token_lifetime = 600):
 		return jwt.encode({ 'reset_password':self.id,
-							'exp':time()+token_lifetime }, app.config['SECRET_KEY'],
+							'exp':time()+token_lifetime }, current_app.config['SECRET_KEY'],
 						  algorithm= 'HS256').decode('utf-8')
 	@staticmethod
 	def verify_reset_password_token(token):
 		try:
-			id = jwt.decode(token, app.config['SECRET_KEY'], algorithms = ['HS256'])['reset_password']
+			id = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms = ['HS256'])['reset_password']
 		except:
 			return None
-		return User.query.get(id).firstI
+		return User.query.get(id)
 
 @login.user_loader #настройка flask_login user_loader на БД
 def load_user(id):
